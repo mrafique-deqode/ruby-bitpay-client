@@ -6,14 +6,14 @@ require 'bitpay_keyutils'
 require 'net/http'
 require 'json'
 require 'bitpay/rest_connector'
-require 'bitpay/operations/invoice'
+require 'bitpay/models/invoice/invoice'
 
 module Bitpay
 
   class RubyClient
 
     include Bitpay::RestConnector
-    include Bitpay::Operations::Invoice
+    include Bitpay::Models::Invoice
 
     # Create a Bitpay client with a pem file.
     #

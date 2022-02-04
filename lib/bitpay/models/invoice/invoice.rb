@@ -1,5 +1,5 @@
 module Bitpay
-    module Operations
+    module Models
         module Invoice
 
             def create_invoice(price:, currency:, facade: 'pos', params: {})

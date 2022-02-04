@@ -5,8 +5,8 @@ libdir = File.dirname(__FILE__)
 $LOAD_PATH.unshift(libdir) unless $LOAD_PATH.include?(libdir)
 
 require 'dotenv/load'
-require 'bitpay/ruby_client'
-require 'bitpay/client_version'
+require 'bitpay/client'
+require 'bitpay/version'
 
 module Bitpay
 
