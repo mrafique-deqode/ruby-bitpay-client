@@ -1,7 +1,7 @@
 # frozen_string_literal: true
-require 'pry'
+# require 'pry'
 libdir = File.dirname(__FILE__)
-binding.pry
+# binding.pry
 $LOAD_PATH.unshift(libdir) unless $LOAD_PATH.include?(libdir)
 
 require 'dotenv/load'
