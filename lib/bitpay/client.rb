@@ -1,8 +1,4 @@
-# https://stackoverflow.com/a/12334707
-# Remove for local setup
-$LOAD_PATH.unshift '/home/deq/Documents/ruby-bitpay-keyutils/ruby-bitpay-keyutils/lib'
-require 'bitpay_keyutils'
-
+require 'bitpay/utils/key_utils'
 require 'net/http'
 require 'json'
 require 'bitpay/rest_connector'
@@ -89,24 +85,6 @@ module Bitpay
       client_token = {}
       @tokens = response['data'].inject({}) { |data, value| data.merge(value) }
     end
-
-    # Creates the Invoice.
-    # def create_invoice(price:, currency:, facade: 'pos', params: {})
-    #   if price_format_valid?(price, currency) && currency_valid?(currency)
-    #       params.merge!({ price: price, currency: currency })
-    #       token = get_token(facade)
-    #       invoice = post(path: '/invoices', token: token, params: params)
-    #       invoice['data']
-    #   end
-    # end
-
-    # def create_invoice(price:, currency:, facade:, params: {})
-    #   @price = price
-    #   @currency = currency
-    #   @facade = facade
-    #   @params = params
-    #   Bitpay::Modals::Invoice.new({}).create_invoice(price, currency, facade, params)
-    # end
 
     private
 
