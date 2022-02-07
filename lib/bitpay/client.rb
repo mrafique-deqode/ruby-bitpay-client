@@ -3,6 +3,7 @@ require 'net/http'
 require 'json'
 require 'bitpay/rest_connector'
 require 'bitpay/models/invoice/invoice'
+require 'bitpay/exceptions/bitpay_exception'
 
 module Bitpay
 
@@ -10,6 +11,7 @@ module Bitpay
 
     include Bitpay::RestConnector
     include Bitpay::Models::Invoice
+    # include Bitpay::Exceptions
 
     # Create a Bitpay client with a pem file.
     #
@@ -129,7 +131,7 @@ module Bitpay
       regex = /^[[:upper:]]{3}$/
       return true if !regex.match(currency).nil?
 
-      raise ArgumentError, 'Illegal Argument: Currency is invalid'
+      raise Bitpay::Exceptions::BitpayException.new(message: 'Error: Currency code must be a type of Model.Currency')
     end
 
     # Returns the token for the given facade of the Bitpay client.

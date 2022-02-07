@@ -92,6 +92,25 @@ module Bitpay
       
     end
 
+    def simple_post(path:, token: nil, params:)
+      request = Net::HTTP::Post.new(path)
+      params[:token] = token if token
+      params[:guid] = SecureRandom.uuid
+      params[:id] = @client_id
+      request.body = params.to_json
+
+      if token
+        request['X-Signature'] = Bitpay::RubyKeyutils.sign(
+          @uri.to_s + path + request.body, @priv_key
+        )
+        request['X-Identity'] = @pub_key
+      end
+
+      process_request(request)
+      
+      
+    end
+
     private
 
     # Processes HTTP Request and returns parsed response
