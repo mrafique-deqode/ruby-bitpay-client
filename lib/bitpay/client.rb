@@ -1,12 +1,9 @@
-# https://stackoverflow.com/a/12334707
-# Remove for local setup
-$LOAD_PATH.unshift '/home/deq/Documents/ruby-bitpay-keyutils/ruby-bitpay-keyutils/lib'
-require 'bitpay_keyutils'
-
+require 'bitpay/utils/key_utils'
 require 'net/http'
 require 'json'
 require 'bitpay/rest_connector'
 require 'bitpay/models/invoice/invoice'
+require 'bitpay/exceptions/bitpay_exception'
 
 module Bitpay
 
@@ -14,6 +11,7 @@ module Bitpay
 
     include Bitpay::RestConnector
     include Bitpay::Models::Invoice
+    # include Bitpay::Exceptions
 
     # Create a Bitpay client with a pem file.
     #
@@ -90,24 +88,6 @@ module Bitpay
       @tokens = response['data'].inject({}) { |data, value| data.merge(value) }
     end
 
-    # Creates the Invoice.
-    # def create_invoice(price:, currency:, facade: 'pos', params: {})
-    #   if price_format_valid?(price, currency) && currency_valid?(currency)
-    #       params.merge!({ price: price, currency: currency })
-    #       token = get_token(facade)
-    #       invoice = post(path: '/invoices', token: token, params: params)
-    #       invoice['data']
-    #   end
-    # end
-
-    # def create_invoice(price:, currency:, facade:, params: {})
-    #   @price = price
-    #   @currency = currency
-    #   @facade = facade
-    #   @params = params
-    #   Bitpay::Modals::Invoice.new({}).create_invoice(price, currency, facade, params)
-    # end
-
     private
 
     # Verifies the Pairing Code is valid or not.
@@ -151,7 +131,7 @@ module Bitpay
       regex = /^[[:upper:]]{3}$/
       return true if !regex.match(currency).nil?
 
-      raise ArgumentError, 'Illegal Argument: Currency is invalid'
+      raise Bitpay::Exceptions::BitpayException.new(message: 'Error: Currency code must be a type of Model.Currency')
     end
 
     # Returns the token for the given facade of the Bitpay client.

@@ -1,12 +1,11 @@
 module Bitpay
     module Models
         module Invoice
-
             def create_invoice(price:, currency:, facade: 'pos', params: {})
                 if price_format_valid?(price, currency) && currency_valid?(currency)
                     params.merge!({ price: price, currency: currency })
                     token = get_token(facade)
-                    invoice = post(path: '/invoices', token: token, params: params)
+                    invoice = simple_post(path: '/invoices', token: token, params: params)
                     invoice['data']
                 end
             end
@@ -35,7 +34,7 @@ module Bitpay
                 invoice = get(path: "/invoices/#{id}", public: true)
                 invoice["data"]
             end
-                    # puts 'Inner test passed'
-                end
-            end
+            # puts 'Inner test passed'
+        end
+    end
 end

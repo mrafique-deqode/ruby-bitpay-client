@@ -1,7 +1,4 @@
-$LOAD_PATH.unshift '/home/deq/Documents/ruby-bitpay-keyutils/ruby-bitpay-keyutils/lib'
-require 'bitpay_keyutils'
-$LOAD_PATH.unshift '/home/deq/Documents/ruby-bitpay-sdk/ruby-bitpay-client/lib'
-require 'bitpay_client'
+require './lib/bitpay_client'
 
 $environment = ''
 $key = ''
@@ -56,6 +53,7 @@ end
 def get_pairing_code
     $pairing_code = $client.pair_client()
     puts $pairing_code.dig("data", 0, "pairingCode")
+    puts $pairing_code.dig("data", 0, "token")
     puts 'Pairing code generated. Please verify it by going on ' + $domain
 end
 
@@ -64,6 +62,7 @@ def select_facade
     case $facade
     when 'm'
         puts 'Requesting tokens....'
+        get_pairing_code()
         sleep 1
     when 'p'
         puts 'Requesting tokens....'
@@ -109,8 +108,8 @@ initiate_client()
 puts 'Client initiated'
 sleep 2
 puts 'Selct tokens that you would like to request'
-puts 'Press M for merchant, P for payout, or B for both'
-$facade = gets.chomp.downcase
+# puts 'Enter merchant, payout, or both to generate tokens for facades'
+# $facade = gets.chomp.downcase
 sleep 1
 select_facade()
 sleep 2
