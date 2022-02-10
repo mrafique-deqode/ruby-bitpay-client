@@ -12,6 +12,7 @@ Full implementation of the BitPay Payment Gateway. This library implements BitPa
 
 ## Getting Started &raquo;
 To get up and running with our Ruby library quickly, follow [The GUIDE](https://github.com/bitpay/ruby-client/blob/master/GUIDE.md)
+Note: Change this path to the bitpay Guide.md which refers to the correct code.
 
 ## Support
 

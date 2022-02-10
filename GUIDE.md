@@ -63,6 +63,7 @@ If you are developing a client with built-in pairing capability, you can pair pr
   In this case, the `pos` facade will be automatically assigned.
 
   See Bitpay::RubyClient.pair_pos_client('pairingCode') with validating the pairingCode.
+  To generate the token for the facade we should pass the facade in params to "pair_client()"
 
 This is an example of creating a client with the BitPay toolset and pairing.
 
