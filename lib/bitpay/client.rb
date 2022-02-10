@@ -1,8 +1,7 @@
-require 'bitpay/utils/key_utils'
 require 'net/http'
 require 'json'
 require 'bitpay/rest_connector'
-require 'bitpay/models/invoice/invoice'
+require 'bitpay/models/invoices/invoice'
 require 'bitpay/exceptions/bitpay_exception'
 
 module Bitpay
@@ -75,6 +74,8 @@ module Bitpay
     # Authenticate with Bitpay from server side, with pairing code generated from account.
     #
     # @params pairing_code [String]
+    #
+    # @note Not used at present.
     def pair_pos_client(pairing_code)
       pair_client(pairingCode: pairing_code) if pairing_code_valid?(pairing_code)
     end

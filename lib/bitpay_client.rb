@@ -6,6 +6,7 @@ $LOAD_PATH.unshift(libdir) unless $LOAD_PATH.include?(libdir)
 
 require 'dotenv/load'
 require 'bitpay/client'
+require 'bitpay/ruby_keyutils'
 require 'bitpay/version'
 
 module Bitpay
