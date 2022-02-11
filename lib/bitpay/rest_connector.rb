@@ -7,10 +7,11 @@ module Bitpay
         token_prefix = path.include?('?') ? '&token=' : '?token='
         path += token_prefix + token
       end
-
       path += query_filter unless query_filter.nil?
 
       request = Net::HTTP::Get.new(path)
+
+      # To use the request without signature and identity for Public facade
       unless public
         request['X-Signature'] = Bitpay::RubyKeyutils.sign(@uri.to_s + path, @priv_key)
         request['X-Identity'] = @pub_key
@@ -19,16 +20,16 @@ module Bitpay
       process_request(request)
     end
 
-    def post(path:, token: nil, params:)
+    def post(path:, token: nil, params: , sign_request: false)
       request = Net::HTTP::Post.new(path)
       params[:token] = token if token
       params[:guid] = SecureRandom.uuid
       params[:id] = @client_id
       request.body = params.to_json
 
-      if token
+      if token && sign_request
         request['X-Signature'] = Bitpay::RubyKeyutils.sign(
-        @uri.to_s + path + request.body, @priv_key
+          @uri.to_s + path + request.body, @priv_key
         )
         request['X-Identity'] = @pub_key
       end

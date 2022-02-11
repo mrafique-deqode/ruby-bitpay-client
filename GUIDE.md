@@ -110,13 +110,14 @@ Optional parameters:
 ### Create a new bitcoin invoice
 
 ```ruby
-3.0.0 :009 > invoice = client.create_invoice(price: <price>, currency: <currency>, facade: 'merchant')
+3.0.0 :009 > invoice = client.create_invoice(price: <price>, currency: <currency>, facade: 'merchant', public: false)
+
+  ## 'sign_request: ' to be false if we want to use the features publicly.
  =>
 {"url"=>"https://test.bitpay.com/invoice?id=J74wHKkScJC68nBz253VWa",
  "status"=>"new",
  ....}
 
- Note: For 'pos' we can avoid the argument 'facade: ' while creating invoice.
 ```
 
 With invoice creation, `price` and `currency` are the only required fields. If you are sending a customer from your website to make a purchase, setting `redirectURL` will redirect the customer to your website when the invoice is paid.

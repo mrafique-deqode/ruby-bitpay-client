@@ -150,9 +150,7 @@ RSpec.describe Bitpay::RubyClient do
       it 'should raise error if the currency character is not as ISO certified' do
 
         expect { bitpay_client_with_pem.create_invoice(price: '50.00', currency: 'USD$') }
-          .to raise_error(
-            Bitpay::ArgumentError, 'Illegal Argument: Currency is invalid'
-          )
+          .to raise_error(Bitpay::Exceptions::BitpayException)
 
       end
 
@@ -174,4 +172,27 @@ RSpec.describe Bitpay::RubyClient do
 
   end
 
+  describe '#get_rates' do
+
+    it 'should fetch the rates with the given currency' do
+      expect(bitpay_client_with_pem.get_rates('BTC')).to be_truthy
+    end
+
+  end
+
+  describe '#get_pair_rate' do
+
+    it 'should fetch the rate for with the given currency pair' do
+      expect(bitpay_client_with_pem.get_pair_rate('BTC', 'USD')).to be_truthy
+    end
+
+  end
+
+  describe '#get_currencies' do
+
+    it 'should fetch the currencies supported with Bitpay' do
+      expect(bitpay_client_with_pem.get_currencies).to be_truthy
+    end
+
+  end
 end

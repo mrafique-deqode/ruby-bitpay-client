@@ -1,8 +1,8 @@
 require 'net/http'
 require 'json'
 require 'bitpay/rest_connector'
-require 'bitpay/models/invoices/invoice'
-require 'bitpay/exceptions/bitpay_exception'
+Dir["./lib/bitpay/exceptions/*.rb"].each {|file| require file }
+Dir["./lib/bitpay/models/*/*.rb"].each {|file| require file }
 
 module Bitpay
 
@@ -10,7 +10,6 @@ module Bitpay
 
     include Bitpay::RestConnector
     include Bitpay::Models::Invoice
-    # include Bitpay::Exceptions
 
     # Create a Bitpay client with a pem file.
     #
@@ -68,7 +67,7 @@ module Bitpay
     #
     # @see BitPay authentication in 'https://github.com/bitpay/ruby-bitpay-client' README.md
     def pair_client(params = {})
-      post(path: '/tokens', params: params)
+      post(path: '/tokens', params: params, sign_request: true)
     end
 
     # Authenticate with Bitpay from server side, with pairing code generated from account.
@@ -89,6 +88,33 @@ module Bitpay
       @tokens = response['data'].inject({}) { |data, value| data.merge(value) }
     end
 
+    # Fetches the rates for the given currency.
+    #
+    # @params base_currency [String] Currency code for which we need to find the rate.
+    #
+    # @return [Hash]
+    def get_rates(base_currency)
+      get(path: "/rates/#{base_currency}", public: true)
+    end
+
+    # Fetches the rates for the given currency with other counter currency.
+    #
+    # @params base_currency [String] Currency code for which we need to find the rate.
+    # @params counter_currency [String] Currency code for which we need to find the rate 
+    # with base currency.
+    #
+    # @return [Hash]
+    def get_pair_rate(base_currency, counter_currency)
+      get(path: "/rates/#{base_currency}/#{counter_currency}", public: true)
+    end
+
+    # Fetches the list of currencies supported by Bitpay.
+    #
+    # @return [Hash]
+    def get_currencies
+      get(path: '/currencies', public: true)
+    end
+
     private
 
     # Verifies the Pairing Code is valid or not.
@@ -104,35 +130,6 @@ module Bitpay
       return true unless regex.match(pairing_code).nil?
 
       raise ArgumentError, 'Pairing code is invalid'
-    end
-
-    # Verifies the invoice price is in required format.
-    #
-    # * If it is invalid, raises Bitpay::ArgumentError.
-    def price_format_valid?(price, currency)
-      float_regex = /^[[:digit:]]+(\.[[:digit:]]{2})?$/
-      return true if price.is_a?(Numeric) ||
-        !float_regex.match(price).nil? ||
-        (currency == 'BTC' && btc_price_format_valid?(price))
-
-      raise ArgumentError, 'Illegal Argument: Price must be formatted as a float'
-    end
-
-    # Verifies the regex for a BTC currency invoice price.
-    def btc_price_format_valid?(price)
-      regex = /^[[:digit:]]+(\.[[:digit:]]{1,6})?$/
-
-      !regex.match(price).nil?
-    end
-
-    # Verifies the invoice currency is valid or not.
-    #
-    # * If it is invalid, raises Bitpay::ArgumentError.
-    def currency_valid?(currency)
-      regex = /^[[:upper:]]{3}$/
-      return true if !regex.match(currency).nil?
-
-      raise Bitpay::Exceptions::BitpayException.new(message: 'Error: Currency code must be a type of Model.Currency')
     end
 
     # Returns the token for the given facade of the Bitpay client.
