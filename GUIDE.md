@@ -110,7 +110,7 @@ Optional parameters:
 ### Create a new bitcoin invoice
 
 ```ruby
-3.0.0 :009 > invoice = client.create_invoice(price: <price>, currency: <currency>, facade: 'merchant', public: false)
+3.0.0 :009 > invoice = client.create_invoice(price: <price>, currency: <currency>, sign_request: false, params: {facade: 'merchant'})
 
   ## 'sign_request: ' to be false if we want to use the features publicly.
  =>

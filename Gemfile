@@ -10,6 +10,7 @@ gem 'rspec', '~> 3.0'
 gem 'rubocop', '~> 0.80'
 gem 'dotenv', '~> 2.7', '>= 2.7.6'
 gem 'pry'
+gem 'ecdsa', '~>1.2.0'
 
 # Remove after development
-gem 'ruby-bitpay-keyutils', path: '/home/deq/Documents/ruby-bitpay-keyutils/ruby-bitpay-keyutils'
+# gem 'ruby-bitpay-keyutils', path: '/home/deq/Documents/ruby-bitpay-keyutils/ruby-bitpay-keyutils'

@@ -34,6 +34,7 @@ class BitpaySdk
       puts "Please save the above PEM for future use \n "
     else
       begin
+        private_key_path = '/home/deq/projects/md/ruby-bitpay-client/config/bitpay_config.json'
         @pem = File.read(private_key_path)
         puts "Your PEM key fetched from above path is #{pem}"
       rescue => e
@@ -109,7 +110,7 @@ class BitpaySdk
 
       merchant_pairing_code = response["data"][0]["pairingCode"]
       puts "pairingCode for Merchant is #{merchant_pairing_code}. Please approve from the Bitpay account"
-      merchant_token = response["data"][0]["token"]
+      @merchant_token = response["data"][0]["token"]
       puts "Token for Merchant is #{merchant_token} \n "
     end
     if ['payout', 'both'].include?(facade)
@@ -117,7 +118,7 @@ class BitpaySdk
 
       payout_pairing_code = response["data"][0]["pairingCode"]
       puts "pairingCode for Payout is #{payout_pairing_code}. Please approve from the Bitpay account"
-      payout_token = response["data"][0]["token"]
+      @payout_token = response["data"][0]["token"]
       puts "Token for Payout is #{payout_token} \n "
     end
     puts "Please use the PairingCode to approve token on the link '#{api_uri}/dashboard/merchant/api-tokens'\n "
