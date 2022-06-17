@@ -14,8 +14,8 @@ module Bitpay
       def create_invoice(price:, currency:, sign_request: true, params: {})
         if price_format_valid?(price, currency) && currency_valid?(currency)
           params.merge!({ price: price, currency: currency })
-          token = get_token(facade)
-          invoice = post(path: '/invoices', token: token, sign_request: true, params: params)
+          token = get_token(params[:facade])
+          invoice = post(path: '/invoices', token: token, sign_request: sign_request, params: params)
           invoice['data']
         end
       end
